@@ -13,7 +13,6 @@ intents.message_content = True
 
 bot = commands.Bot(command_prefix="/", intents=intents)
 
-# Список для хранения ID созданных каналов и соответствующих сообщений лога
 created_channels = {}
 channel_counter = 1
 restricted_role_id = 1142574526241189919
@@ -54,7 +53,7 @@ async def verify(ctx, *, user: discord.Member):
 
 @bot.event
 async def on_voice_state_update(member, before, after):
-    global channel_counter  # Объявляем, что собираемся изменять глобальную переменную channel_counter
+    global channel_counter 
     print(f"on_voice_state_update: member={member}, before={before}, after={after}")
     if before.channel != after.channel:
         category_id = 1119580763717906502
@@ -86,7 +85,7 @@ async def on_voice_state_update(member, before, after):
                     'log_message': None,
                     'member_list_message': None,
                     'owner': member
-                }  # Сохраняем ID и информацию о созданном канале
+                } 
                 await member.move_to(new_channel)
                 log_channel = bot.get_channel(1119583379822755923)
                 if log_channel:
@@ -103,7 +102,7 @@ async def on_voice_state_update(member, before, after):
             log_message = created_channels[channel.id]['log_message']
             if log_message:
                 await log_message.delete()
-            del created_channels[channel.id]  # Удаляем информацию о удаленном канале
+            del created_channels[channel.id]
 
     elif before.channel and before.channel.id in created_channels:
         channel = bot.get_channel(before.channel.id)
